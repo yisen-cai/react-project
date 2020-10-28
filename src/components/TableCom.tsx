@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { table } from "console";
 import React from "react";
 
@@ -34,11 +35,14 @@ class TableCom extends React.Component<Props, { tableData: Array<TableData> }> {
         },
       ],
     };
+
+    // This binding is necessary to make `this` work in the callback
     this.removeCharacter = this.removeCharacter.bind(this);
   }
 
   removeCharacter(ind: number) {
     const { tableData } = this.state;
+    // remove table element by given number
     this.setState({
       tableData: tableData.filter((row, index) => {
         return index !== ind;
@@ -99,13 +103,9 @@ class Form extends React.Component<{}, { [key: string]: any }> {
     this.submitForm = this.submitForm.bind(this);
   }
 
-  handleSubmit() {
+  handleSubmit() {}
 
-  }
-
-  submitForm() {
-
-  }
+  submitForm() {}
 
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;

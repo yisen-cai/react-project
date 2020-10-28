@@ -1,7 +1,7 @@
 import React from "react";
 import FuntionalCom from "../../components/FunctionalCom";
 import TableCom, { TableData } from "../../components/TableCom";
-
+import NameForm from "../../components/NameForm";
 import "./HelloView.css";
 
 type MyProp = {
@@ -45,7 +45,8 @@ class Hello extends React.Component<MyProp, MyState> {
     return (
       <div className="container">
         <FuntionalCom message="Hello" />
-        <TableCom tableData={this.tableData}/>
+        <TableCom tableData={this.tableData} />
+        <NameForm title="hello" />
       </div>
     );
   }

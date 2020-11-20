@@ -2,7 +2,8 @@ import React from "react";
 import { DatePicker } from "antd";
 import moment, { Moment } from "moment";
 import "moment/locale/zh-cn";
-import locale from "antd/es/date-picker/locale/zh_CN";
+import locale from "antd/lib/date-picker/locale/zh_CN";
+// import locale  from "antd/lib/locale-provider/zh_CN";
 
 type State = {
   name: string;

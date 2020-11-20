@@ -33,7 +33,12 @@ const reactRouter = (
 );
 
 function Home() {
-  return <h2>Home</h2>;
+  return (
+    <div>
+      <h2>Home</h2>
+      <a href="http://baidu.com">learn react</a>
+    </div>
+  );
 }
 
 function About() {

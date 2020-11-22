@@ -89,10 +89,10 @@ jobs:
           SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
 
       - name: Pull docker base image and save
-        run: "docker pull nginx && docker save nginx > nginx.tar"
+        run: "docker pull nginx && docker save nginx > nginx.tar && env"
 
       - name: Build docker image
-        run: "docker build -t yisen614/react-project:$SOURCE_BRANCH ."
+        run: "docker build -t yisen614/react-project:v1 ."
 
       - name: Push docker image
-        run: "docker push yisen614/react-project:$SOURCE_BRANCH"
+        run: "docker push yisen614/react-project:$v1"

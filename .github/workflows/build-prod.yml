@@ -46,45 +46,18 @@ jobs:
           path: ./build/
           if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
 
-      - name: Build Image
-        run: docker build -t image .
-        # - name: Annotate
-        #   uses: Attest/annotations-action@v0.1.0
-        #   with:
-        #     title: "Annotate Files"
-        #     input: "./annotations.json"
-        #     token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Tag Image
-        run: |
-          # Extract Image name from "name" of package.json
-          IMAGE_NAME=$(jq -r '.name' package.json)
-          echo IMAGE_NAME=$IMAGE_NAME
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag image $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
-        env:
-          CI: true
-
-  push_to_registry:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v1
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          registry: hub.docker.com
-          repository: yisen614/react-project:v1
-          tag_with_ref: true
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: yisen614/react-project:v1

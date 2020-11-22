@@ -71,11 +71,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-image-
 
+      - name: Get Project Info
+        id: branch_name
+        run: |
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+
+      - name: Save Project Info
+        run: |
+          echo $SOURCE_NAME
+          echo $SOURCE_BRANCH
+          echo $SOURCE_TAG
+        env:
+          SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+          SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
+          SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
+
       - name: Pull docker base image and save
         run: "docker pull nginx && docker save nginx > nginx.tar"
 
       - name: Build docker image
-        run: "docker build -t yisen614/react-project:v1 ."
+        run: "docker build -t yisen614/$SOURCE_NAME:$SOURCE_TAG ."
 
       - name: Push docker image
-        run: "docker push yisen614/react-project:v1"
+        run: "docker push yisen614/$SOURCE_NAME:$SOURCE_TAG"

@@ -92,7 +92,7 @@ jobs:
         run: "docker pull nginx && docker save nginx > nginx.tar"
 
       - name: Build docker image
-        run: "docker build -t yisen614/$SOURCE_NAME:$SOURCE_TAG ."
+        run: "docker build -t yisen614/react-project:$SOURCE_BRANCH ."
 
       - name: Push docker image
-        run: "docker push yisen614/$SOURCE_NAME:$SOURCE_TAG"
+        run: "docker push yisen614/react-project:$SOURCE_BRANCH"

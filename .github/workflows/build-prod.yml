@@ -75,7 +75,7 @@ jobs:
         run: "docker pull nginx && docker save nginx > nginx.tar"
 
       - name: Build docker image
-        run: "docker build -t yisen614/react-project:v1 --file ./Dockerfile"
+        run: "docker build -t yisen614/react-project:v1 ."
 
       - name: Push docker image
         run: "docker push yisen614/react-project:v1"

@@ -63,21 +63,19 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Cache build
+      - name: Cache Docker image
         uses: actions/cache@v2
-        id: build-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: build
-          key: ${{ runner.os }}-build-${{ hashFiles('**/build') }}
+          path: nginx.tar
+          key: ${{ runner.os }}-image-${{ hashFiles('**/Dockerfile') }}
           restore-keys: |
-            ${{ runner.os }}-build-
+            ${{ runner.os }}-image-
 
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: yisen614/react-project:v1
-          build-args: |
-            arg1=value1
-            arg2=value2
+      - name: Pull docker base image and save
+        run: "docker pull nginx && docker save nginx > nginx.tar"
+
+      - name: Build docker image
+        run: "docker build -t yisen614/react-project:v1 --file ./Dockerfile"
+
+      - name: Push docker image
+        run: "docker push yisen614/react-project:v1"

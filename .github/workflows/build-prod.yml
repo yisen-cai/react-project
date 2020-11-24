@@ -91,8 +91,11 @@ jobs:
       - name: Pull docker base image and save
         run: "docker pull nginx && docker save nginx > nginx.tar && env"
 
+      - name: Load cached image
+        run: "docker image import nginx.tar"
+
       - name: Build docker image
         run: "docker build -t yisen614/react-project:v1 ."
 
       - name: Push docker image
-        run: "docker push yisen614/react-project:$v1"
+        run: "docker push yisen614/react-project:v1"
